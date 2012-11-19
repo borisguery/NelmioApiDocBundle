@@ -79,6 +79,11 @@ class ApiDoc
     private $route;
 
     /**
+     * @var string
+     */
+    private $resourceKey;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -113,6 +118,10 @@ class ApiDoc
         }
 
         $this->isResource = isset($data['resource']) && $data['resource'];
+
+        if ($this->isResource && isset($data['resourceKey'])) {
+            $this->resourceKey = $data['resourceKey'];
+        }
     }
 
     /**
@@ -255,6 +264,11 @@ class ApiDoc
         return $this->statusCodes;
     }
 
+    public function getResourceKey()
+    {
+        return $this->resourceKey;
+    }
+
     /**
      * @return array
      */
@@ -291,6 +305,10 @@ class ApiDoc
 
         if ($statusCodes = $this->statusCodes) {
             $data['statusCodes'] = $statusCodes;
+        }
+
+        if ($resourceKey = $this->getResourceKey()) {
+            $data['resourceKey'] = $resourceKey;
         }
 
         return $data;

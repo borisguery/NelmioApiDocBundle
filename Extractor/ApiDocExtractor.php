@@ -339,16 +339,27 @@ class ApiDocExtractor
     {
         foreach ($this->reader->getMethodAnnotations($method) as $annot) {
             if (is_subclass_of($annot, self::FOS_REST_PARAM_CLASS)) {
+                $type = 'unknown';
+                $description = null;
+                foreach (explode("\n", $this->commentExtractor->getDocComment($method)) as $line) {
+                    if (preg_match('{^@param (.+)}', trim($line), $matches)) {
+                        $regexp = '{([\w<>\[\]]*) *\$%s *(.*)}i';
+                        if (preg_match(sprintf($regexp, preg_quote($annot->name)), $matches[1], $paramDoc)) {
+                            list(,$type, $description) = $paramDoc;
+                        }
+                    }
+                }
                 if ($annot->strict) {
                     $annotation->addRequirement($annot->name, array(
                         'requirement'   => $annot->requirements,
-                        'type'          => '',
-                        'description'   => $annot->description,
+                        'type'          => $type,
+                        'description'   => $annot->description ? : $description,
                     ));
                 } else {
                     $annotation->addFilter($annot->name, array(
                         'requirement'   => $annot->requirements,
-                        'description'   => $annot->description,
+                        'type'          => $type,
+                        'description'   => $annot->description ? : $description,
                     ));
                 }
             }
