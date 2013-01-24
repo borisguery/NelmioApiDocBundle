@@ -94,6 +94,11 @@ class ApiDoc
     private $https = false;
 
     /**
+     * @var string
+     */
+    private $resourceKey;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -127,6 +132,12 @@ class ApiDoc
 
         if (isset($data['statusCodes'])) {
             $this->statusCodes = $data['statusCodes'];
+        }
+
+        $this->isResource = isset($data['resource']) && $data['resource'];
+
+        if ($this->isResource && isset($data['resourceKey'])) {
+            $this->resourceKey = $data['resourceKey'];
         }
     }
 
@@ -265,6 +276,11 @@ class ApiDoc
         $this->https = $https;
     }
 
+    public function getResourceKey()
+    {
+        return $this->resourceKey;
+    }
+
     /**
      * @return array
      */
@@ -304,6 +320,10 @@ class ApiDoc
         }
 
         $data['https'] = $this->https;
+
+        if ($resourceKey = $this->getResourceKey()) {
+            $data['resourceKey'] = $resourceKey;
+        }
 
         return $data;
     }
