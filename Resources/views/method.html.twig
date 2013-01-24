@@ -38,6 +38,11 @@
                 <h4>Resource key</h4>
                 <pre><code>{{ data.resourceKey }}</code></pre>
             {% endif %}
+
+            {% if data.model is defined %}
+                <h4>Model</h4>
+                <pre><code>{{ data.model }}</code></pre>
+            {% endif %}
             {% if data.requirements is defined  and data.requirements is not empty %}
                 <h4>Requirements</h4>
                 <table class="fullwidth">

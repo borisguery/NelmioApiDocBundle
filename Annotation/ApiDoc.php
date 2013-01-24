@@ -99,6 +99,11 @@ class ApiDoc
     private $resourceKey;
 
     /**
+     * @var string
+     */
+    private $model;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -139,6 +144,8 @@ class ApiDoc
         if ($this->isResource && isset($data['resourceKey'])) {
             $this->resourceKey = $data['resourceKey'];
         }
+
+        $this->model = isset($data['model']) ? $data['model'] : null;
     }
 
     /**
@@ -281,6 +288,11 @@ class ApiDoc
         return $this->resourceKey;
     }
 
+    public function getModel()
+    {
+        return $this->model;
+    }
+
     /**
      * @return array
      */
@@ -323,6 +335,10 @@ class ApiDoc
 
         if ($resourceKey = $this->getResourceKey()) {
             $data['resourceKey'] = $resourceKey;
+        }
+
+        if ($model = $this->getModel()) {
+            $data['model'] = $model;
         }
 
         return $data;
